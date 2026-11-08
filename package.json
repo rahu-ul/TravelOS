@@ -1,0 +1,19 @@
+{
+  "name": "travelos",
+  "version": "0.1.0",
+  "private": true,
+  "description": "TravelOS - travel website, package CMS and enquiry management (modular monolith)",
+  "scripts": {
+    "install:all": "npm install && npm install --prefix server && npm install --prefix client",
+    "dev:server": "npm run dev --prefix server",
+    "dev:client": "npm run dev --prefix client",
+    "seed": "npm run seed --prefix server",
+    "test": "npm test --prefix server",
+    "build": "npm run build --prefix client",
+    "start": "npm start --prefix server",
+    "dev": "concurrently -n api,web -c green,cyan \"npm run dev:server\" \"npm run dev:client\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

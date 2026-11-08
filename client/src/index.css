@@ -1,0 +1,134 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand Colors */
+  --color-ivory: #F8F6EF;
+  --color-forest: #183F35;
+  --color-forest-dark: #102F28;
+  --color-olive: #87916B;
+  --color-sand: #E9E2D3;
+  --color-charcoal: #252A27;
+  --color-cream: #FAF8F3;
+  --color-muted: #6B7280;
+
+  /* Typography — Playfair Display loaded via index.html Google Fonts */
+  --font-serif: "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-sans: "Inter", "Helvetica Neue", Arial, sans-serif;
+
+  /* Spacing */
+  --spacing-section: 5rem;
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-ivory text-charcoal antialiased;
+    font-family: var(--font-sans);
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-serif);
+  }
+}
+
+@layer utilities {
+  .font-serif {
+    font-family: var(--font-serif);
+  }
+
+  .text-forest {
+    color: var(--color-forest);
+  }
+
+  .bg-forest {
+    background-color: var(--color-forest);
+  }
+
+  .text-forest-dark {
+    color: var(--color-forest-dark);
+  }
+
+  .bg-forest-dark {
+    background-color: var(--color-forest-dark);
+  }
+
+  .text-olive {
+    color: var(--color-olive);
+  }
+
+  .bg-olive {
+    background-color: var(--color-olive);
+  }
+
+  .text-sand {
+    color: var(--color-sand);
+  }
+
+  .bg-sand {
+    background-color: var(--color-sand);
+  }
+
+  .text-ivory {
+    color: var(--color-ivory);
+  }
+
+  .bg-ivory {
+    background-color: var(--color-ivory);
+  }
+
+  .text-charcoal {
+    color: var(--color-charcoal);
+  }
+
+  .bg-charcoal {
+    background-color: var(--color-charcoal);
+  }
+
+  .text-cream {
+    color: var(--color-cream);
+  }
+
+  .bg-cream {
+    background-color: var(--color-cream);
+  }
+
+  .border-sand {
+    border-color: var(--color-sand);
+  }
+
+  .border-forest {
+    border-color: var(--color-forest);
+  }
+
+  /* Section spacing */
+  .section-padding {
+    @apply py-16 md:py-24;
+  }
+
+  /* Container */
+  .container-site {
+    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Hover transitions */
+  .hover-lift {
+    @apply transition-transform duration-300 hover:-translate-y-1;
+  }
+
+  /* Image cover */
+  .img-cover {
+    @apply w-full h-full object-cover;
+  }
+
+  /* Demo badge */
+  .demo-badge {
+    @apply inline-flex items-center gap-1 rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-800 border border-amber-200;
+  }
+}
