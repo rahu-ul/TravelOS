@@ -45,6 +45,7 @@ export default function ContactPage() {
 
   const [submitting, setSubmitting] = useState(false);
   const [submittedData, setSubmittedData] = useState(null);
+  const [submitError, setSubmitError] = useState(null);
   const [errors, setErrors] = useState({});
 
   const validate = () => {
@@ -64,6 +65,7 @@ export default function ContactPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSubmitError(null);
     const errs = validate();
     if (Object.keys(errs).length > 0) {
       setErrors(errs);
@@ -92,16 +94,8 @@ export default function ContactPage() {
         duplicate: res.data.data.duplicate,
         name: form.name,
       });
-    } catch {
-      // Graceful fallback to demo acknowledgment
-      const year = new Date().getFullYear();
-      const mockRef = `ENQ-${year}-DEMO${Math.floor(1000 + Math.random() * 9000)}`;
-      setSubmittedData({
-        isLive: false,
-        reference: mockRef,
-        duplicate: false,
-        name: form.name,
-      });
+    } catch (err) {
+      setSubmitError(err.message || 'Unable to submit your enquiry at this time. Please check your connection or contact our team directly.');
     } finally {
       setSubmitting(false);
     }
@@ -210,7 +204,15 @@ export default function ContactPage() {
                 <h2 className="font-serif text-2xl font-medium text-charcoal">Tailored travel enquiry</h2>
                 <p className="mt-1 text-xs text-muted">All submissions are assigned directly to an expert travel consultant</p>
               </div>
-                <form onSubmit={handleSubmit} noValidate className="space-y-5">
+
+              {submitError && (
+                <div className="mb-6 rounded-xl border border-bad/30 bg-bad-soft p-4 text-xs leading-relaxed text-bad flex items-center justify-between">
+                  <span>{submitError}</span>
+                  <button type="button" onClick={() => setSubmitError(null)} className="ml-3 font-bold">✕</button>
+                </div>
+              )}
+
+              <form onSubmit={handleSubmit} noValidate className="space-y-5">
                   {/* Name + Email */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div>

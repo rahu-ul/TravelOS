@@ -4,7 +4,9 @@ import dotenv from 'dotenv';
 import { z } from 'zod';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-// Single .env at the repository root (see .env.example)
+dotenv.config({ path: path.resolve(process.cwd(), '.env'), quiet: true });
+dotenv.config({ path: path.resolve(process.cwd(), '../.env'), quiet: true });
+dotenv.config({ path: path.resolve(__dirname, '../../.env'), quiet: true });
 dotenv.config({ path: path.resolve(__dirname, '../../../.env'), quiet: true });
 
 const boolString = z.enum(['true', 'false']).default('false').transform((v) => v === 'true');

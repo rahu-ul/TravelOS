@@ -4,9 +4,11 @@ import { asyncHandler } from '../utils/asyncHandler.js';
 import { verifyToken } from '../modules/auth/auth.service.js';
 import { User } from '../modules/auth/user.model.js';
 
-// Reads the JWT from the httpOnly cookie, loads the user and attaches it to req.user.
+// Reads the JWT from the httpOnly cookie or Authorization Bearer header, loads the user and attaches it to req.user.
 export const authenticate = asyncHandler(async (req, _res, next) => {
-  const token = req.cookies?.[COOKIE_NAME];
+  const authHeader = req.headers.authorization;
+  const bearerToken = authHeader?.startsWith('Bearer ') ? authHeader.slice(7).trim() : null;
+  const token = req.cookies?.[COOKIE_NAME] || bearerToken;
   if (!token) throw ApiError.unauthorized();
   const payload = verifyToken(token); // throws JsonWebTokenError / TokenExpiredError -> 401 via errorHandler
   const user = await User.findById(payload.sub);

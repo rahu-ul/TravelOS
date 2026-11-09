@@ -42,7 +42,13 @@ export function createApp(options = {}) {
     cors({
       origin(origin, cb) {
         // No Origin header = same-origin / curl / server-to-server. Otherwise must be allow-listed.
-        cb(null, !origin || env.clientOrigins.includes(origin));
+        if (!origin) return cb(null, true);
+        const norm = origin.replace(/\/+$/, '');
+        const isAllowed =
+          env.clientOrigins.some((o) => o.replace(/\/+$/, '') === norm) ||
+          norm === 'https://travel-os-indol.vercel.app' ||
+          /^https:\/\/travel-os-[a-z0-9-]+\.vercel\.app$/.test(norm);
+        cb(null, isAllowed);
       },
       credentials: true,
     })

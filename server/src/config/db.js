@@ -25,7 +25,19 @@ ensureDns();
 export async function connectDB(uri = env.MONGODB_URI) {
   ensureDns();
   try {
-    await mongoose.connect(uri, { serverSelectionTimeoutMS: 10000 });
+    const connectOptions = { serverSelectionTimeoutMS: 10000 };
+
+    // Prevent connecting to MongoDB Atlas default 'test' database in production/development
+    // unless explicitly in test mode (vitest)
+    if (!env.isTest) {
+      const match = uri.match(/^mongodb(?:\+srv)?:\/\/[^/]+\/([^?]*)/);
+      const uriDb = match ? match[1] : '';
+      if (!uriDb || uriDb === 'test') {
+        connectOptions.dbName = process.env.MONGODB_DB_NAME || 'travelos';
+      }
+    }
+
+    await mongoose.connect(uri, connectOptions);
   } catch (err) {
     throw new Error(`MongoDB connection failed: ${err.message}`, { cause: err });
   }

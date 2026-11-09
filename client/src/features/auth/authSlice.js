@@ -10,7 +10,15 @@ export const register = createAsyncThunk('auth/register', async (data, { rejectW
 export const login = createAsyncThunk('auth/login', async (creds, { rejectWithValue }) => {
   try { return (await api.post('/auth/login', creds)).data.data.user; } catch (e) { return rejectWithValue(e.message); }
 });
-export const logout = createAsyncThunk('auth/logout', async () => { await api.post('/auth/logout'); });
+export const logout = createAsyncThunk('auth/logout', async () => {
+  try {
+    await api.post('/auth/logout');
+  } finally {
+    try {
+      localStorage.removeItem('travelos_token');
+    } catch {}
+  }
+});
 
 const authSlice = createSlice({
   name: 'auth',

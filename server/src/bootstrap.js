@@ -4,18 +4,25 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import dotenv from 'dotenv';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+// Discover .env from repository root or current directory
+dotenv.config({ path: path.resolve(process.cwd(), '.env'), quiet: true });
+dotenv.config({ path: path.resolve(process.cwd(), '../.env'), quiet: true });
 dotenv.config({ path: path.resolve(__dirname, '../../.env'), quiet: true });
+dotenv.config({ path: path.resolve(__dirname, '../../../.env'), quiet: true });
 
 const dnsServers = (process.env.MONGODB_DNS_SERVERS || '8.8.8.8,8.8.4.4')
   .split(',')
   .map((server) => server.trim())
   .filter(Boolean);
 
-if (dnsServers.length === 0) {
-  throw new Error('MONGODB_DNS_SERVERS must contain at least one DNS server');
+if (dnsServers.length > 0) {
+  try {
+    dns.setServers(dnsServers);
+  } catch {
+    // In restricted container environments, continue with system DNS
+  }
 }
-
-dns.setServers(dnsServers);
 
 const entryPoint = process.argv[2];
 if (!entryPoint) {

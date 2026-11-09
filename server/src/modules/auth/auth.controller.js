@@ -7,7 +7,7 @@ import * as authService from './auth.service.js';
 const cookieOptions = {
   httpOnly: true,
   secure: env.isProduction,
-  sameSite: 'lax',
+  sameSite: env.isProduction ? 'none' : 'lax',
   path: '/',
 };
 
@@ -18,13 +18,13 @@ export const register = asyncHandler(async (req, res) => {
     password: req.body.password,
   });
   res.cookie(COOKIE_NAME, token, { ...cookieOptions, maxAge: authService.TOKEN_MAX_AGE_MS });
-  sendSuccess(res, { user }, { status: 201 });
+  sendSuccess(res, { user, token }, { status: 201 });
 });
 
 export const login = asyncHandler(async (req, res) => {
   const { user, token } = await authService.login(req.body.email, req.body.password);
   res.cookie(COOKIE_NAME, token, { ...cookieOptions, maxAge: authService.TOKEN_MAX_AGE_MS });
-  sendSuccess(res, { user });
+  sendSuccess(res, { user, token });
 });
 
 export const logout = asyncHandler(async (_req, res) => {
