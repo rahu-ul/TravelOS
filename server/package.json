@@ -1,0 +1,34 @@
+{
+  "name": "travelos-server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "nodemon src/bootstrap.js ./index.js",
+    "start": "node src/bootstrap.js ./index.js",
+    "seed": "node src/bootstrap.js ./seed/seed.js",
+    "seed:admin": "node src/bootstrap.js ./seed/ensureAdmin.js",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.9",
+    "express": "^4.22.3",
+    "express-mongo-sanitize": "^2.2.0",
+    "express-rate-limit": "^8.7.2",
+    "helmet": "^8.3.0",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^8.24.7",
+    "morgan": "^1.12.1",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14",
+    "supertest": "^7.3.1",
+    "vitest": "^5.0.5"
+  }
+}
